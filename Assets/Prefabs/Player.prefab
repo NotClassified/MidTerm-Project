@@ -177,7 +177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 424309c95fca2564bb0844b17fb265ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  laserDuration: 1
+  laserDuration: 1.5
   laserWidth:
     serializedVersion: 2
     m_Curve:
@@ -218,8 +218,8 @@ MonoBehaviour:
       inWeight: 0.17275013
       outWeight: 0.07583409
     - serializedVersion: 3
-      time: 0.59270144
-      value: 0.09961202
+      time: 0.56838065
+      value: 0.16570857
       inSlope: -1.0402262
       outSlope: -1.0402262
       tangentMode: 0
@@ -227,13 +227,13 @@ MonoBehaviour:
       inWeight: 0.9200119
       outWeight: 0.2050783
     - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0.041469686
-      outSlope: 0.041469686
+      time: 0.8842438
+      value: 0.034973748
+      inSlope: -0.2334982
+      outSlope: -0.2334982
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.22320005
+      inWeight: 0.101474896
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

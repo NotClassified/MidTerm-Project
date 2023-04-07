@@ -7,6 +7,7 @@ TagManager:
   - BreakableWall
   - Wall
   - Chest
+  - Boundary Wall
   layers:
   - Default
   - TransparentFX

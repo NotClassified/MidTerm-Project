@@ -22,7 +22,7 @@ public class PlayerGun : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !laser.enabled)
+        if (Input.GetKey(KeyCode.Space) && !laser.enabled)
         {
             StartCoroutine(ChargeLaser());
             StartCoroutine(ShootLaser());
@@ -36,7 +36,7 @@ public class PlayerGun : MonoBehaviour
         float time = 0;
         float width;
         //bool hasShot = false;
-        while (time < laserDuration)
+        while (time / laserDuration < .7f)
         {
             if (time / laserDuration < .5f)
             {

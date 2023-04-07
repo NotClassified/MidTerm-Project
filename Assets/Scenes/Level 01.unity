@@ -199,8 +199,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chestPrefab: {fileID: 2617085866096103498, guid: 1f393074f92dc444cb7cd3ed72e355ea, type: 3}
-  chestAmount: 3
-  chestSpawnDelay: 5
+  chestAmount: 10
+  chestSpawnDelay: 1
   chestSpawnOnStart: 1
   spawnBoundary1: {x: 9.5, y: 0, z: 4.5}
   spawnBoundary2: {x: -9.5, y: 0, z: -4.5}
@@ -884,7 +884,7 @@ GameObject:
   - component: {fileID: 438054349}
   m_Layer: 0
   m_Name: Wall (3)
-  m_TagString: Wall
+  m_TagString: Boundary Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1545,7 +1545,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -1999,7 +1999,7 @@ GameObject:
   - component: {fileID: 1235997392}
   m_Layer: 0
   m_Name: Wall
-  m_TagString: Wall
+  m_TagString: Boundary Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2664,7 +2664,7 @@ GameObject:
   - component: {fileID: 1660148743}
   m_Layer: 0
   m_Name: Wall (1)
-  m_TagString: Wall
+  m_TagString: Boundary Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2963,7 +2963,7 @@ GameObject:
   - component: {fileID: 1796191001}
   m_Layer: 0
   m_Name: Wall (2)
-  m_TagString: Wall
+  m_TagString: Boundary Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
