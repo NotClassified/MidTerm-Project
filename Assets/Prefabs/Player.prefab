@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 8787427542416452874}
   - component: {fileID: 5026656912440132499}
   - component: {fileID: -9168833445971312459}
+  - component: {fileID: 1788934092013765284}
   - component: {fileID: 564557735775040643}
   - component: {fileID: 1579928944621681882}
   m_Layer: 0
@@ -138,6 +139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
+  fsm: {fileID: 0}
 --- !u!114 &8787427542416452874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  fsm: {fileID: 0}
   turnSpeed: 2500
 --- !u!114 &5026656912440132499
 MonoBehaviour:
@@ -165,6 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  fsm: {fileID: 0}
 --- !u!114 &-9168833445971312459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,7 +181,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 424309c95fca2564bb0844b17fb265ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  laserDuration: 1.5
+  laserSpeed: 1.5
+  laserDuration: 0.8
   laserWidth:
     serializedVersion: 2
     m_Curve:
@@ -242,6 +247,20 @@ MonoBehaviour:
   laserMask:
     serializedVersion: 2
     m_Bits: 0
+--- !u!114 &1788934092013765284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2059579267404622847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68d84ed47418ade45a1ee4093c0e1fa7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 0
+  ammo: 0
 --- !u!54 &564557735775040643
 Rigidbody:
   m_ObjectHideFlags: 0

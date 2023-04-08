@@ -8,9 +8,23 @@ public class PlayerMoveFSM : MonoBehaviour
     PlayerMoveState[] states;
     PlayerMoveState currentState;
 
-    enum StateIndex
+    enum States
     {
         Idle, Normal, Shooting
+    }
+
+    KeyCode[] inputBindings = { KeyCode.W, KeyCode.S, KeyCode.D, KeyCode.A, KeyCode.Space };
+    public enum Binding
+    {
+        Up, Down, Right, Left, Shoot,
+    }
+    public KeyCode GetKeyCode(Binding b)
+    {
+        return inputBindings[(int) b];
+    }
+    public void SetBinding(Binding binding, KeyCode key)
+    {
+        inputBindings[(int)binding] = key;
     }
 
     private void Awake()
@@ -46,28 +60,19 @@ public class PlayerMoveFSM : MonoBehaviour
         currentState = next;
     }
 
-    //private bool IsCurrentState(StateIndex index) => currentState == states[(int)index];
-    private Type GetStateType(StateIndex index) => states[(int)index].GetType();
+    private Type GetStateType(States index) => states[(int)index].GetType();
 
     private void Update()
     {
         currentState.OnUpdate();
 
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(GetKeyCode(Binding.Shoot)))
         {
-            ChangeState(GetStateType(StateIndex.Shooting));
+            ChangeState(GetStateType(States.Shooting));
         }
         else
         {
-            //if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S)
-            //|| Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A))
-            //{
-                ChangeState(GetStateType(StateIndex.Normal));
-            //}
-            //else
-            //{
-            //    ChangeState(GetStateType(StateIndex.Idle));
-            //}
+            ChangeState(GetStateType(States.Normal));
         }
     }
 }

@@ -5,10 +5,14 @@ using UnityEngine;
 public class PlayerMoveState : MonoBehaviour
 {
     public float speed;
+    public PlayerMoveFSM fsm;
 
     public virtual void OnEnter()
     {
-
+        if (fsm == null)
+        {
+            fsm = GetComponent<PlayerMoveFSM>();
+        }
     }
     public virtual void OnUpdate()
     {

@@ -15,27 +15,23 @@ public class PlayerMoveNormal : PlayerMoveState
     {
         base.OnUpdate();
 
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(fsm.GetKeyCode(PlayerMoveFSM.Binding.Up)))
         {
-            //directionVertical.y = 0f;
             movementVertical = Vector3.forward;
         }
-        else if (Input.GetKey(KeyCode.S))
+        else if (Input.GetKey(fsm.GetKeyCode(PlayerMoveFSM.Binding.Down)))
         {
-            //directionVertical.y = Vector3.Angle(Vector3.left, Vector3.right);
             movementVertical = Vector3.back;
         }
         else
             movementVertical = Vector3.zero;
 
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(fsm.GetKeyCode(PlayerMoveFSM.Binding.Right)))
         {
-            //directionHorizontal.y = Vector3.Angle(Vector3.right, Vector3.up);
             movementHorizontal = Vector3.right;
         }
-        else if (Input.GetKey(KeyCode.A))
+        else if (Input.GetKey(fsm.GetKeyCode(PlayerMoveFSM.Binding.Left)))
         {
-            //directionHorizontal.y = -Vector3.Angle(Vector3.right, Vector3.up);
             movementHorizontal = Vector3.left;
         }
         else
@@ -43,6 +39,7 @@ public class PlayerMoveNormal : PlayerMoveState
 
         Vector3 movement = movementVertical + movementHorizontal;
 
+        //gradually rotate player to the direction is currently moving towards
         if (movement != Vector3.zero)
         {
             Quaternion endRotation = Quaternion.LookRotation(movement, Vector3.up);

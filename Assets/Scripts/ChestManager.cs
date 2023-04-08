@@ -10,7 +10,6 @@ public class ChestManager : MonoBehaviour
 
     [SerializeField] int chestAmount;
     [SerializeField] float chestSpawnDelay;
-    [SerializeField] bool chestSpawnOnStart;
     [SerializeField] Vector3 spawnBoundary1;
     [SerializeField] Vector3 spawnBoundary2;
 
@@ -18,9 +17,9 @@ public class ChestManager : MonoBehaviour
     IEnumerator Start()
     {
 
-        if (chestSpawnOnStart)
+        foreach(Transform child in transform)
         {
-            NewChest();
+            chests.Add(child.GetComponent<ChestObject>());
         }
 
         while (true)
