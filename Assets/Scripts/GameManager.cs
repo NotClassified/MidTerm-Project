@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -35,11 +36,28 @@ public class GameManager : MonoBehaviour
         player2Movefsm.SetBinding(PlayerMoveFSM.Binding.Left, KeyCode.LeftArrow);
         player2Movefsm.SetBinding(PlayerMoveFSM.Binding.Shoot, KeyCode.Return);
 
-        //set player's health and ammo
-        player1.GetComponent<PlayerInventory>().health = startingHealth;
-        player2.GetComponent<PlayerInventory>().health = startingHealth;
-        player1.GetComponent<PlayerInventory>().ammo = startingAmmo;
-        player2.GetComponent<PlayerInventory>().ammo = startingAmmo;
+        //set player's number, health, ammo, and bomb status
+        PlayerInventory p1Inventory = player1.GetComponent<PlayerInventory>();
+        PlayerInventory p2Inventory = player2.GetComponent<PlayerInventory>();
+        p1Inventory.playerNum = 1;
+        p2Inventory.playerNum = 2;
+
+        p1Inventory.Health = startingHealth;
+        p2Inventory.Health = startingHealth;
+
+        p1Inventory.Ammo = startingAmmo;
+        p2Inventory.Ammo = startingAmmo;
+
+        p1Inventory.HasBomb = false;
+        p2Inventory.HasBomb = false;
+    }
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene(0);
+        }
     }
 
     public Vector3 GetSpawnPoint(SpawnPoints point)

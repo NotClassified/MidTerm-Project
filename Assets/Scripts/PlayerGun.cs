@@ -28,7 +28,7 @@ public class PlayerGun : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(moveFSM.GetKeyCode(PlayerMoveFSM.Binding.Shoot)) && !laser.enabled)
+        if (Input.GetKey(moveFSM.GetKeyCode(PlayerMoveFSM.Binding.Shoot)) && !laser.enabled && !inventory.HasBomb)
         {
             if (inventory.EnoughAmmo())
             {
@@ -89,7 +89,8 @@ public class PlayerGun : MonoBehaviour
         }
         else if (hitsTag.Equals(ObjectTags.Chest)) //open chest
         {
-            hit.transform.GetComponent<ChestObject>().Open(); 
+            FindObjectOfType<ChestManager>().OpenChest(hit.transform.gameObject, gameObject, true);
         }
     }
+
 }

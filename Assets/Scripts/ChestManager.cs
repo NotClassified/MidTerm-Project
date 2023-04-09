@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class ChestManager : MonoBehaviour
 {
-    List<ChestObject> chests = new List<ChestObject>();
+    List<GameObject> chests = new List<GameObject>();
     [SerializeField] GameObject chestPrefab;
 
     [SerializeField] int chestAmount;
@@ -13,13 +13,20 @@ public class ChestManager : MonoBehaviour
     [SerializeField] Vector3 spawnBoundary1;
     [SerializeField] Vector3 spawnBoundary2;
 
+    public enum Items
+    {
+        Health, Bomb,
+    }
+    [Range(0, 100)] public int chanceOfBombItem;
+    public int minAmmoAmount;
+    public int maxAmmoAmount;
 
     IEnumerator Start()
     {
 
         foreach(Transform child in transform)
         {
-            chests.Add(child.GetComponent<ChestObject>());
+            chests.Add(child.gameObject);
         }
 
         while (true)
@@ -37,9 +44,7 @@ public class ChestManager : MonoBehaviour
         float snap = .25f;
         var spawnPos = FindEmptySpace(spawnBoundary1, spawnBoundary2, chestPrefab.transform.lossyScale / 2f, snap);
 
-        ChestObject chestScript = Instantiate(chestPrefab, spawnPos, new Quaternion(), transform).GetComponent<ChestObject>();
-
-        chests.Add(chestScript);
+        chests.Add(Instantiate(chestPrefab, spawnPos, new Quaternion(), transform));
     }
     Vector3 FindEmptySpace(Vector3 boundary1, Vector3 boundary2, Vector3 halfExtent, float snap)
     {
@@ -52,10 +57,29 @@ public class ChestManager : MonoBehaviour
         return randSpace;
     }
 
-    public void OpenChest(ChestObject chest)
+    public void OpenChest(GameObject chest, GameObject player, bool shotChest)
     {
+        PlayerInventory inventory = player.GetComponent<PlayerInventory>();
+        ChestObject chestData = chest.GetComponent<ChestObject>();
+
+        if (shotChest) //player shot the chest, give player either health or a bomb
+        {
+            if (chestData.specialItem == Items.Health)
+            {
+                inventory.Health++;
+            }
+            else if (chestData.specialItem == Items.Bomb)
+            {
+                inventory.CarryBombRoutine();
+            }
+        }
+        else //player collided with the chest, give player ammo
+        {
+            inventory.Ammo += chestData.ammoAmount;
+        }
+
         chests.Remove(chest);
-        Destroy(chest.gameObject);
+        Destroy(chest);
     }
 
     public static Vector3 RandomVector3Range(Vector3 min, Vector3 max)
