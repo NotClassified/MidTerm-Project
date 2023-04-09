@@ -12,7 +12,6 @@ public class PlayerGun : MonoBehaviour
     [SerializeField] AnimationCurve laserWidth;
     [SerializeField] float laserChargeLength;
     [SerializeField] float laserWidthMultiplier;
-    bool laserHasFinishedCharging;
 
     PlayerMoveFSM moveFSM;
     PlayerInventory inventory;
@@ -41,12 +40,10 @@ public class PlayerGun : MonoBehaviour
 
     IEnumerator ChargeLaser()
     {
-        laserHasFinishedCharging = false;
         laser.enabled = true;
 
         float time = 0;
         float width;
-        //bool hasShot = false;
         while (time / laserSpeed < laserChargeDuration)
         {
             if (time / laserSpeed < .5f)
@@ -54,10 +51,7 @@ public class PlayerGun : MonoBehaviour
                 laserPositions[0] = transform.position;
                 laserPositions[1] = transform.position + transform.forward * laserChargeLength;
                 laser.SetPositions(laserPositions);
-                //print(0);
             }
-            //else
-            //    laserHasFinishedCharging = true;
 
             width = laserWidth.Evaluate(time / laserSpeed) * laserWidthMultiplier;
             if (width < 0)
@@ -76,11 +70,8 @@ public class PlayerGun : MonoBehaviour
     IEnumerator ShootLaser()
     {
         yield return new WaitForSeconds(laserSpeed / 2); //wait for charge
-        //while (!laserHasFinishedCharging) //wait for charge
-        //{
-        //    yield return null;
-        //}
 
+        //make laser full length since it is now shooting
         Physics.Raycast(transform.position, transform.forward, out RaycastHit hit);
         laserPositions[0] = transform.position;
         laserPositions[1] = hit.point;

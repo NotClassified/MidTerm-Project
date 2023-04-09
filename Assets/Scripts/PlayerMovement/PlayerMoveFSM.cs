@@ -10,7 +10,7 @@ public class PlayerMoveFSM : MonoBehaviour
 
     enum States
     {
-        Idle, Normal, Shooting
+        Normal, Shooting
     }
 
     KeyCode[] inputBindings = { KeyCode.W, KeyCode.S, KeyCode.D, KeyCode.A, KeyCode.Space };
@@ -34,7 +34,7 @@ public class PlayerMoveFSM : MonoBehaviour
 
     private void Start()
     {
-        ChangeState(GetComponent<PlayerMoveIdle>().GetType());
+        ChangeState(GetComponent<PlayerMoveNormal>().GetType());
     }
 
     public void ChangeState(Type stateType)
@@ -45,7 +45,10 @@ public class PlayerMoveFSM : MonoBehaviour
             if (state.GetType() == stateType)
             {
                 if (currentState == state)
-                    return; 
+                {
+                    Debug.LogWarning("This State is already active: " + currentState);
+                    return;
+                }
 
                 next = state;
                 break;
@@ -61,6 +64,7 @@ public class PlayerMoveFSM : MonoBehaviour
     }
 
     private Type GetStateType(States index) => states[(int)index].GetType();
+    private PlayerMoveState GetState(States index) => states[(int)index];
 
     private void Update()
     {
@@ -68,11 +72,13 @@ public class PlayerMoveFSM : MonoBehaviour
 
         if (Input.GetKey(GetKeyCode(Binding.Shoot)))
         {
-            ChangeState(GetStateType(States.Shooting));
+            if (currentState != GetState(States.Shooting))
+                ChangeState(GetStateType(States.Shooting));
         }
         else
         {
-            ChangeState(GetStateType(States.Normal));
+            if (currentState != GetState(States.Normal))
+                ChangeState(GetStateType(States.Normal));
         }
     }
 }
