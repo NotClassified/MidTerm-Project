@@ -25,14 +25,14 @@ public class UIManager : MonoBehaviour
 
     void SetAmmo(int playerNum, int ammo)
     {
-        ammo_text[playerNum - 1].text = ammo.ToString();
+        ammo_text[playerNum].text = ammo.ToString();
     }
     void SetHealth(int playerNum, int health)
     {
-        health_text[playerNum - 1].text = health.ToString();
+        health_text[playerNum].text = health.ToString();
     }
     void SetBombStatus(int playerNum, bool hasBomb)
     {
-        bombStatus_text[playerNum - 1].text = hasBomb ? "Bomb!" : "";
+        bombStatus_text[playerNum].text = hasBomb ? "Bomb!" : "";
     }
 }

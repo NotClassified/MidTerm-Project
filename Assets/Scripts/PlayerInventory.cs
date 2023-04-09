@@ -5,7 +5,7 @@ using System;
 
 public class PlayerInventory : MonoBehaviour
 {
-    public int playerNum;
+    int playerNum;
 
     int health;
     int ammo;
@@ -36,6 +36,12 @@ public class PlayerInventory : MonoBehaviour
             hasBomb = value;
             bombChange(playerNum, hasBomb);
         }
+    }
+
+    public void SetPlayerNumber(int num, Material material)
+    {
+        playerNum = num;
+        GetComponent<MeshRenderer>().material = material;
     }
 
 

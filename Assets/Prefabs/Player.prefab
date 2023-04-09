@@ -182,7 +182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   laserSpeed: 1.5
-  laserDuration: 0.8
+  laserChargeDuration: 0.8
   laserWidth:
     serializedVersion: 2
     m_Curve:
@@ -243,10 +243,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  laserChargeLength: 1
   laserWidthMultiplier: 0.5
-  laserMask:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &1788934092013765284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,8 +257,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68d84ed47418ade45a1ee4093c0e1fa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
-  ammo: 0
 --- !u!54 &564557735775040643
 Rigidbody:
   m_ObjectHideFlags: 0

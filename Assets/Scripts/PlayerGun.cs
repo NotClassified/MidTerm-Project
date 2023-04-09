@@ -8,10 +8,11 @@ public class PlayerGun : MonoBehaviour
     LineRenderer laser;
     Vector3[] laserPositions;
     [SerializeField] float laserSpeed;
-    [SerializeField] float laserDuration;
+    [SerializeField] float laserChargeDuration;
     [SerializeField] AnimationCurve laserWidth;
+    [SerializeField] float laserChargeLength;
     [SerializeField] float laserWidthMultiplier;
-    [SerializeField] LayerMask laserMask;
+    bool laserHasFinishedCharging;
 
     PlayerMoveFSM moveFSM;
     PlayerInventory inventory;
@@ -40,20 +41,23 @@ public class PlayerGun : MonoBehaviour
 
     IEnumerator ChargeLaser()
     {
+        laserHasFinishedCharging = false;
         laser.enabled = true;
 
         float time = 0;
         float width;
         //bool hasShot = false;
-        while (time / laserSpeed < laserDuration)
+        while (time / laserSpeed < laserChargeDuration)
         {
             if (time / laserSpeed < .5f)
             {
-                Physics.Raycast(transform.position, transform.forward, out RaycastHit hit);
                 laserPositions[0] = transform.position;
-                laserPositions[1] = hit.point;
+                laserPositions[1] = transform.position + transform.forward * laserChargeLength;
                 laser.SetPositions(laserPositions);
+                //print(0);
             }
+            //else
+            //    laserHasFinishedCharging = true;
 
             width = laserWidth.Evaluate(time / laserSpeed) * laserWidthMultiplier;
             if (width < 0)
@@ -72,8 +76,17 @@ public class PlayerGun : MonoBehaviour
     IEnumerator ShootLaser()
     {
         yield return new WaitForSeconds(laserSpeed / 2); //wait for charge
+        //while (!laserHasFinishedCharging) //wait for charge
+        //{
+        //    yield return null;
+        //}
 
         Physics.Raycast(transform.position, transform.forward, out RaycastHit hit);
+        laserPositions[0] = transform.position;
+        laserPositions[1] = hit.point;
+        laser.SetPositions(laserPositions);
+
+        //laser has hit an object, do something:
         string hitsTag = hit.transform.tag;
         if (hitsTag.Equals(ObjectTags.Player)) //damage opposing player
         {

@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] GameObject playerPrefab;
     public GameObject player1;
+    [SerializeField] Material[] playerMaterials;
     public GameObject player2;
     [SerializeField] int startingHealth;
     [SerializeField] int startingAmmo;
@@ -39,8 +40,8 @@ public class GameManager : MonoBehaviour
         //set player's number, health, ammo, and bomb status
         PlayerInventory p1Inventory = player1.GetComponent<PlayerInventory>();
         PlayerInventory p2Inventory = player2.GetComponent<PlayerInventory>();
-        p1Inventory.playerNum = 1;
-        p2Inventory.playerNum = 2;
+        p1Inventory.SetPlayerNumber(0, playerMaterials[0]);
+        p2Inventory.SetPlayerNumber(1, playerMaterials[1]);
 
         p1Inventory.Health = startingHealth;
         p2Inventory.Health = startingHealth;

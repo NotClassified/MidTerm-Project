@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMoveState : MonoBehaviour
 {
     public float speed;
-    public PlayerMoveFSM fsm;
+    [HideInInspector] public PlayerMoveFSM fsm;
 
     public virtual void OnEnter()
     {
