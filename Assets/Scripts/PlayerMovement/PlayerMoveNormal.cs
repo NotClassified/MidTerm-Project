@@ -5,11 +5,30 @@ using UnityEngine;
 public class PlayerMoveNormal : PlayerMoveState
 {
     [SerializeField] float turnSpeed;
+    [SerializeField] float speedWithAmmo;
+    [SerializeField] float speedNoAmmo;
     Vector3 movementVertical;
     Vector3 movementHorizontal;
-    //Vector3 directionVertical;
-    //Vector3 directionHorizontal;
-    //Vector3 direction;
+
+    PlayerInventory inventory;
+    private void Awake()
+    {
+        inventory = GetComponent<PlayerInventory>();
+        PlayerInventory.ammoChange += ChangeSpeed;
+    }
+
+    private void OnDestroy()
+    {
+        PlayerInventory.ammoChange -= ChangeSpeed;
+    }
+
+    void ChangeSpeed(int playerNum, int ammo)
+    {
+        if (inventory.GetPlayerNumber() == playerNum)
+        {
+            speed = ammo > 0 ? speedWithAmmo : speedNoAmmo;
+        }
+    }
 
     public override void OnUpdate()
     {
@@ -48,5 +67,6 @@ public class PlayerMoveNormal : PlayerMoveState
         }
 
         transform.position += movement.normalized * speed * Time.deltaTime;
+
     }
 }

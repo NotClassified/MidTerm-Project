@@ -43,6 +43,7 @@ public class PlayerInventory : MonoBehaviour
         playerNum = num;
         GetComponent<MeshRenderer>().material = material;
     }
+    public int GetPlayerNumber() => playerNum;
 
 
     PlayerMoveFSM moveFSM;
@@ -54,16 +55,6 @@ public class PlayerInventory : MonoBehaviour
     private void Awake()
     {
         moveFSM = GetComponent<PlayerMoveFSM>();
-    }
-
-    public bool EnoughAmmo()
-    {
-        if (Ammo > 0)
-        {
-            Ammo--;
-            return true;
-        }
-        return false;
     }
 
     ///<summary> returns health amount left </summary>

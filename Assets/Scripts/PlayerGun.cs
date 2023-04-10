@@ -12,6 +12,7 @@ public class PlayerGun : MonoBehaviour
     [SerializeField] AnimationCurve laserWidth;
     [SerializeField] float laserChargeLength;
     [SerializeField] float laserWidthMultiplier;
+    [SerializeField] LayerMask shootableLayer;
 
     PlayerMoveFSM moveFSM;
     PlayerInventory inventory;
@@ -30,15 +31,15 @@ public class PlayerGun : MonoBehaviour
     {
         if (Input.GetKey(moveFSM.GetKeyCode(PlayerMoveFSM.Binding.Shoot)) && !laser.enabled && !inventory.HasBomb)
         {
-            if (inventory.EnoughAmmo())
+            if (inventory.Ammo > 0)
             {
-                StartCoroutine(ChargeLaser());
-                StartCoroutine(ShootLaser());
+                StartCoroutine(ChargingLaserRoutine());
+                StartCoroutine(ShootingLaserRoutine());
             }
         }
     }
 
-    IEnumerator ChargeLaser()
+    IEnumerator ChargingLaserRoutine()
     {
         laser.enabled = true;
 
@@ -67,12 +68,38 @@ public class PlayerGun : MonoBehaviour
         laser.enabled = false;
     }
 
-    IEnumerator ShootLaser()
+    IEnumerator ShootingLaserRoutine()
     {
+        ////canceling laser
+        //bool cancelLaser = false;
+        //float time = 0;
+        //while (time / (laserSpeed / 2) < 1)
+        //{
+        //    time += Time.deltaTime;
+        //    yield return null;
+        //    if (Input.GetKeyDown(moveFSM.GetKeyCode(PlayerMoveFSM.Binding.Shoot)))
+        //    {
+        //        cancelLaser = true;
+        //    }
+        //}
+        //if (!cancelLaser)
+        //{
+        //    ShootLaser();
+        //}
+
         yield return new WaitForSeconds(laserSpeed / 2); //wait for charge
+        ShootLaser();
+    }
+
+    void ShootLaser()
+    {
+        inventory.Ammo--;
+
+        Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, Mathf.Infinity, shootableLayer);
+        if (hit.transform == null)
+            return;
 
         //make laser full length since it is now shooting
-        Physics.Raycast(transform.position, transform.forward, out RaycastHit hit);
         laserPositions[0] = transform.position;
         laserPositions[1] = hit.point;
         laser.SetPositions(laserPositions);
@@ -85,11 +112,11 @@ public class PlayerGun : MonoBehaviour
         }
         else if (hitsTag.Equals(ObjectTags.Wall)) //do nothing -_-
         {
-            print(ObjectTags.Wall); 
+            //print(ObjectTags.Wall);
         }
         else if (hitsTag.Equals(ObjectTags.BreakableWall)) //destroy wall
         {
-            Destroy(hit.transform.gameObject); 
+            Destroy(hit.transform.gameObject);
         }
         else if (hitsTag.Equals(ObjectTags.Chest)) //open chest
         {

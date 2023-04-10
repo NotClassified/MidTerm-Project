@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 1788934092013765284}
   - component: {fileID: 564557735775040643}
   - component: {fileID: 1579928944621681882}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -140,6 +140,8 @@ MonoBehaviour:
   speed: 5
   fsm: {fileID: 0}
   turnSpeed: 2500
+  speedWithAmmo: 5
+  speedNoAmmo: 7
 --- !u!114 &5026656912440132499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,7 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b38649778bae7f54ca2f4f049a2b8da0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 6
   fsm: {fileID: 0}
 --- !u!114 &-9168833445971312459
 MonoBehaviour:
@@ -166,7 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 424309c95fca2564bb0844b17fb265ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  laserSpeed: 1.5
+  laserSpeed: 1
   laserChargeDuration: 0.8
   laserWidth:
     serializedVersion: 2
@@ -230,6 +232,9 @@ MonoBehaviour:
     m_RotationOrder: 4
   laserChargeLength: 1
   laserWidthMultiplier: 0.5
+  shootableLayer:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!114 &1788934092013765284
 MonoBehaviour:
   m_ObjectHideFlags: 0

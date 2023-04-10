@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    [SerializeField] GameObject damageImage;
     [SerializeField] TextMeshProUGUI[] ammo_text;
     [SerializeField] TextMeshProUGUI[] health_text;
     [SerializeField] TextMeshProUGUI[] bombStatus_text;
@@ -13,6 +15,7 @@ public class UIManager : MonoBehaviour
     {
         PlayerInventory.ammoChange += SetAmmo;
         PlayerInventory.healthChange += SetHealth;
+        PlayerInventory.healthChange += DamageRoutine;
         PlayerInventory.bombChange += SetBombStatus;
     }
 
@@ -20,7 +23,20 @@ public class UIManager : MonoBehaviour
     {
         PlayerInventory.ammoChange -= SetAmmo;
         PlayerInventory.healthChange -= SetHealth;
+        PlayerInventory.healthChange -= DamageRoutine;
         PlayerInventory.bombChange -= SetBombStatus;
+    }
+
+    void DamageRoutine(int playerNum, int health)
+    {
+        StartCoroutine(Damage(playerNum, health));
+    }
+    IEnumerator Damage(int playerNum, int health)
+    {
+        damageImage.GetComponent<Image>().color = GameManager.instance.playerMaterials[playerNum].color;
+        damageImage.SetActive(true);
+        yield return new WaitForSeconds(.3f);
+        damageImage.SetActive(false);
     }
 
     void SetAmmo(int playerNum, int ammo)

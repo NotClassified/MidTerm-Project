@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 6037077853322475073}
   - component: {fileID: 5036169348872648410}
   - component: {fileID: 3196533733945448444}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Chest
   m_TagString: Chest
   m_Icon: {fileID: 0}
@@ -249,6 +249,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cf44900e32c03b46937e6060d29d42d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  specialItem: 0
+  ammoAmount: 0
 --- !u!1 &6011655010325138264
 GameObject:
   m_ObjectHideFlags: 0

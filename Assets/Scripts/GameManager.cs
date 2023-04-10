@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] GameObject playerPrefab;
     public GameObject player1;
-    [SerializeField] Material[] playerMaterials;
+    public Material[] playerMaterials;
     public GameObject player2;
     [SerializeField] int startingHealth;
     [SerializeField] int startingAmmo;
@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
         player2Movefsm.SetBinding(PlayerMoveFSM.Binding.Down, KeyCode.DownArrow);
         player2Movefsm.SetBinding(PlayerMoveFSM.Binding.Right, KeyCode.RightArrow);
         player2Movefsm.SetBinding(PlayerMoveFSM.Binding.Left, KeyCode.LeftArrow);
-        player2Movefsm.SetBinding(PlayerMoveFSM.Binding.Shoot, KeyCode.Return);
+        player2Movefsm.SetBinding(PlayerMoveFSM.Binding.Shoot, KeyCode.Keypad0);
 
         //set player's number, health, ammo, and bomb status
         PlayerInventory p1Inventory = player1.GetComponent<PlayerInventory>();
@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             SceneManager.LoadScene(0);
         }
