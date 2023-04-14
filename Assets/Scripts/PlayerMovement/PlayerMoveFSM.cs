@@ -8,9 +8,9 @@ public class PlayerMoveFSM : MonoBehaviour
     PlayerMoveState[] states;
     PlayerMoveState currentState;
 
-    enum States
+    public enum MoveStates
     {
-        Normal, Shooting
+        Normal, Shooting, CarryingBomb
     }
 
     KeyCode[] inputBindings = { KeyCode.W, KeyCode.S, KeyCode.D, KeyCode.A, KeyCode.Space };
@@ -30,11 +30,11 @@ public class PlayerMoveFSM : MonoBehaviour
     private void Awake()
     {
         states = GetComponents<PlayerMoveState>();
+        PlayerInventory.bombChange += SetBombState;
     }
-
-    private void Start()
+    private void OnDestroy()
     {
-        ChangeState(GetComponent<PlayerMoveNormal>().GetType());
+        PlayerInventory.bombChange -= SetBombState;
     }
 
     public void ChangeState(Type stateType)
@@ -63,22 +63,71 @@ public class PlayerMoveFSM : MonoBehaviour
         currentState = next;
     }
 
-    private Type GetStateType(States index) => states[(int)index].GetType();
-    private PlayerMoveState GetState(States index) => states[(int)index];
+    public void ChangeStateIfNotCurrent(MoveStates state)
+    {
+        if (currentState == null)
+            return;
+
+        if (currentState != GetState(state))
+        {
+            ChangeState(GetStateType(state));
+        }
+    }
+
+    private Type GetStateType(MoveStates index) => states[(int)index].GetType();
+    private PlayerMoveState GetState(MoveStates index) => states[(int)index];
+    public MoveStates GetCurrentState()
+    {
+        for (int i = 0; i < states.Length; i++)
+        {
+            if (states[i] == currentState)
+            {
+                return (MoveStates) i;
+            }
+        }
+        Debug.LogError("Could not get current state");
+        return 0;
+    }
+    public bool IsCurrentState(MoveStates state)
+    {
+        return currentState == GetState(state);
+    }
 
     private void Update()
     {
-        currentState.OnUpdate();
-
-        if (Input.GetKey(GetKeyCode(Binding.Shoot)))
+        if (currentState != null)
         {
-            if (currentState != GetState(States.Shooting))
-                ChangeState(GetStateType(States.Shooting));
+            currentState.OnUpdate();
         }
-        else
+        else //begin with normal movement
+            ChangeState(GetStateType(MoveStates.Normal));
+
+        if (currentState != GetState(MoveStates.CarryingBomb))
         {
-            if (currentState != GetState(States.Normal))
-                ChangeState(GetStateType(States.Normal));
+            if (Input.GetKey(GetKeyCode(Binding.Shoot))) //player is holding down shoot key
+            {
+                ChangeStateIfNotCurrent(MoveStates.Shooting);
+            }
+            else
+            {
+                ChangeStateIfNotCurrent(MoveStates.Normal);
+            }
+        }
+
+    }
+
+    void SetBombState(int playerNum, bool hasBomb)
+    {
+        if (GetComponent<PlayerInventory>().GetPlayerNumber() == playerNum)
+        {
+            if (hasBomb)
+            {
+                ChangeStateIfNotCurrent(MoveStates.CarryingBomb);
+            }
+            else
+            {
+                ChangeStateIfNotCurrent(MoveStates.Normal);
+            }
         }
     }
 }

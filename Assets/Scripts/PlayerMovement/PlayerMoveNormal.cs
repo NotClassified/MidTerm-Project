@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class PlayerMoveNormal : PlayerMoveState
 {
-    [SerializeField] float turnSpeed;
-    [SerializeField] float speedWithAmmo;
-    [SerializeField] float speedNoAmmo;
+    public float turnSpeed;
+    public float speedWithAmmo;
+    public float speedNoAmmo;
     Vector3 movementVertical;
     Vector3 movementHorizontal;
 
-    PlayerInventory inventory;
+    protected PlayerInventory inventory;
+
     private void Awake()
     {
         inventory = GetComponent<PlayerInventory>();

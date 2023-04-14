@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: -4370385335717426005}
   - component: {fileID: 8787427542416452874}
   - component: {fileID: 5026656912440132499}
+  - component: {fileID: 1780069244560036871}
   - component: {fileID: -9168833445971312459}
   - component: {fileID: 1788934092013765284}
   - component: {fileID: 564557735775040643}
@@ -138,7 +139,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  fsm: {fileID: 0}
   turnSpeed: 2500
   speedWithAmmo: 5
   speedNoAmmo: 7
@@ -155,7 +155,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 6
-  fsm: {fileID: 0}
+--- !u!114 &1780069244560036871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2059579267404622847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 472abed31cabcee49944d0f4f84bb1a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 7
+  turnSpeed: 2500
+  speedWithAmmo: 7
+  speedNoAmmo: 8
 --- !u!114 &-9168833445971312459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,6 +262,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68d84ed47418ade45a1ee4093c0e1fa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bombRadius: 3
+  bombDamage: 2
+  collidedPlayerWithBomb: 0
 --- !u!54 &564557735775040643
 Rigidbody:
   m_ObjectHideFlags: 0

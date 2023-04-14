@@ -7,6 +7,9 @@ public class PlayerInventory : MonoBehaviour
 {
     int playerNum;
 
+    [SerializeField] float bombRadius;
+    [SerializeField] int bombDamage;
+
     int health;
     int ammo;
     bool hasBomb;
@@ -37,6 +40,7 @@ public class PlayerInventory : MonoBehaviour
             bombChange(playerNum, hasBomb);
         }
     }
+    public bool collidedPlayerWithBomb;
 
     public void SetPlayerNumber(int num, Material material)
     {
@@ -81,11 +85,33 @@ public class PlayerInventory : MonoBehaviour
     IEnumerator CarryBomb()
     {
         HasBomb = true;
-        while (!Input.GetKeyUp(moveFSM.GetKeyCode(PlayerMoveFSM.Binding.Shoot)))
+        collidedPlayerWithBomb = false;
+
+        KeyCode shootKey = moveFSM.GetKeyCode(PlayerMoveFSM.Binding.Shoot);
+        while (!Input.GetKeyDown(shootKey) && !collidedPlayerWithBomb)
         {
             yield return null;
         }
-        print("Bomb Exploded");
+        //player has activated bomb or has collided with a player
+        //damage all nearby players
+        Collider[] colliders = Physics.OverlapSphere(transform.position, bombRadius);
+        foreach (Collider col in colliders)
+        {
+            if (col.tag == ObjectTags.Player)
+            {
+                PlayerInventory inventory = col.GetComponent<PlayerInventory>();
+                if (inventory.GetPlayerNumber() != this.playerNum)
+                {
+                    inventory.Health -= bombDamage;
+                }
+            }
+        }
+
+        //prevent player from shooting laser right after activating bomb
+        while (Input.GetKey(shootKey))
+        {
+            yield return null;
+        }
         HasBomb = false;
     }
 }

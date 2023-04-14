@@ -29,9 +29,9 @@ public class PlayerGun : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(moveFSM.GetKeyCode(PlayerMoveFSM.Binding.Shoot)) && !laser.enabled && !inventory.HasBomb)
+        if (Input.GetKey(moveFSM.GetKeyCode(PlayerMoveFSM.Binding.Shoot)) && !laser.enabled)
         {
-            if (inventory.Ammo > 0)
+            if (inventory.Ammo > 0 && !moveFSM.IsCurrentState(PlayerMoveFSM.MoveStates.CarryingBomb))
             {
                 StartCoroutine(ChargingLaserRoutine());
                 StartCoroutine(ShootingLaserRoutine());

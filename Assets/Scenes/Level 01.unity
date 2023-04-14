@@ -204,7 +204,7 @@ MonoBehaviour:
   chestSpawnDelay: 5
   spawnBoundary1: {x: 9.5, y: 0, z: 4.5}
   spawnBoundary2: {x: -9.5, y: 0, z: -4.5}
-  chanceOfBombItem: 0
+  chanceOfBombItem: 100
   minAmmoAmount: 3
   maxAmmoAmount: 6
 --- !u!1 &41888240
