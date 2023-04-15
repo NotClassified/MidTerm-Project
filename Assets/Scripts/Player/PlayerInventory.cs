@@ -69,7 +69,7 @@ public class PlayerInventory : Player
         Health -= damage;
         if (Health <= 0)
         {
-            GameManager.instance.GameOver(gameObject);
+            GameManager.instance.GameOver(playerNum);
         }
         return Health;
     }

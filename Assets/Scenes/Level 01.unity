@@ -2244,12 +2244,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05e7dce2fa893ea449a3fcba8d74b069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerAmount: 2
   playerPrefab: {fileID: 2059579267404622847, guid: 9feb77d8d50fb4c4aba98226216adcdf, type: 3}
-  player1: {fileID: 0}
+  playerObjects: []
   playerMaterials:
   - {fileID: 2100000, guid: db71a830394c3bc4ea2a3e71c1f227af, type: 2}
   - {fileID: 2100000, guid: a7af5c9cb2bf18e4f9c8f5ace9edf0be, type: 2}
-  player2: {fileID: 0}
   startingHealth: 5
   startingAmmo: 5
 --- !u!4 &606295578
