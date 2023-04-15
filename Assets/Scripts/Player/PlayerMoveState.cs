@@ -2,17 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMoveState : MonoBehaviour
+public class PlayerMoveState : Player
 {
     public float speed;
-    protected PlayerMoveFSM fsm;
 
     public virtual void OnEnter()
     {
-        if (fsm == null)
-        {
-            fsm = GetComponent<PlayerMoveFSM>();
-        }
+
     }
     public virtual void OnUpdate()
     {

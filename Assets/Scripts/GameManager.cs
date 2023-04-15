@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -27,19 +28,12 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         player1 = Instantiate(playerPrefab, GetSpawnPoint(SpawnPoints.Player1), new Quaternion());
+        PlayerInventory p1Inventory = player1.GetComponent<PlayerInventory>();
 
         player2 = Instantiate(playerPrefab, GetSpawnPoint(SpawnPoints.Player2), new Quaternion());
-        //set key bindings for 2nd player
-        PlayerMoveFSM player2Movefsm = player2.GetComponent<PlayerMoveFSM>();
-        player2Movefsm.SetBinding(PlayerMoveFSM.Binding.Up, KeyCode.UpArrow);
-        player2Movefsm.SetBinding(PlayerMoveFSM.Binding.Down, KeyCode.DownArrow);
-        player2Movefsm.SetBinding(PlayerMoveFSM.Binding.Right, KeyCode.RightArrow);
-        player2Movefsm.SetBinding(PlayerMoveFSM.Binding.Left, KeyCode.LeftArrow);
-        player2Movefsm.SetBinding(PlayerMoveFSM.Binding.Shoot, KeyCode.Keypad0);
+        PlayerInventory p2Inventory = player2.GetComponent<PlayerInventory>();
 
         //set player's number, health, ammo, and bomb status
-        PlayerInventory p1Inventory = player1.GetComponent<PlayerInventory>();
-        PlayerInventory p2Inventory = player2.GetComponent<PlayerInventory>();
         p1Inventory.SetPlayerNumber(0, playerMaterials[0]);
         p2Inventory.SetPlayerNumber(1, playerMaterials[1]);
 

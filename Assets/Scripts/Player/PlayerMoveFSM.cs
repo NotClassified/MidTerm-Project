@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class PlayerMoveFSM : MonoBehaviour
+public class PlayerMoveFSM : Player
 {
     PlayerMoveState[] states;
     PlayerMoveState currentState;
@@ -13,24 +13,21 @@ public class PlayerMoveFSM : MonoBehaviour
         Normal, Shooting, CarryingBomb
     }
 
-    KeyCode[] inputBindings = { KeyCode.W, KeyCode.S, KeyCode.D, KeyCode.A, KeyCode.Space };
-    public enum Binding
-    {
-        Up, Down, Right, Left, Shoot,
-    }
-    public KeyCode GetKeyCode(Binding b)
-    {
-        return inputBindings[(int) b];
-    }
-    public void SetBinding(Binding binding, KeyCode key)
-    {
-        inputBindings[(int)binding] = key;
-    }
+    //public KeyCode[] inputBindings;
+    //public KeyCode GetKeyCode(BindingManager.Player b)
+    //{
+    //    return inputBindings[(int) b];
+    //}
+    //public void SetBinding(BindingManager.Player binding, KeyCode key)
+    //{
+    //    inputBindings[(int)binding] = key;
+    //}
 
     private void Awake()
     {
         states = GetComponents<PlayerMoveState>();
         PlayerInventory.bombChange += SetBombState;
+
     }
     private void OnDestroy()
     {
@@ -104,7 +101,8 @@ public class PlayerMoveFSM : MonoBehaviour
 
         if (currentState != GetState(MoveStates.CarryingBomb))
         {
-            if (Input.GetKey(GetKeyCode(Binding.Shoot))) //player is holding down shoot key
+            //player is holding down shoot key
+            if (Input.GetKey(bm.GetKeyCode(playerNum, BindingManager.Player.Shoot))) 
             {
                 ChangeStateIfNotCurrent(MoveStates.Shooting);
             }
@@ -116,9 +114,9 @@ public class PlayerMoveFSM : MonoBehaviour
 
     }
 
-    void SetBombState(int playerNum, bool hasBomb)
+    void SetBombState(int _playerNum, bool hasBomb)
     {
-        if (GetComponent<PlayerInventory>().GetPlayerNumber() == playerNum)
+        if (this.playerNum == _playerNum)
         {
             if (hasBomb)
             {

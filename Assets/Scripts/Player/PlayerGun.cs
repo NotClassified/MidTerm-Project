@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerGun : MonoBehaviour
+public class PlayerGun : Player
 {
     LineRenderer laser;
     Vector3[] laserPositions;
@@ -29,7 +29,7 @@ public class PlayerGun : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(moveFSM.GetKeyCode(PlayerMoveFSM.Binding.Shoot)) && !laser.enabled)
+        if (Input.GetKey(bm.GetKeyCode(playerNum, BindingManager.Player.Shoot)) && !laser.enabled)
         {
             if (inventory.Ammo > 0 && !moveFSM.IsCurrentState(PlayerMoveFSM.MoveStates.CarryingBomb))
             {
@@ -77,7 +77,7 @@ public class PlayerGun : MonoBehaviour
         //{
         //    time += Time.deltaTime;
         //    yield return null;
-        //    if (Input.GetKeyDown(moveFSM.GetKeyCode(PlayerMoveFSM.Binding.Shoot)))
+        //    if (Input.GetKeyDown(moveFSM.GetKeyCode(BindingManager.Player.Shoot)))
         //    {
         //        cancelLaser = true;
         //    }

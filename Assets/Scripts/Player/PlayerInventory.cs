@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class PlayerInventory : MonoBehaviour
+public class PlayerInventory : Player
 {
-    int playerNum;
-
     [SerializeField] float bombRadius;
     [SerializeField] int bombDamage;
 
@@ -44,10 +42,14 @@ public class PlayerInventory : MonoBehaviour
 
     public void SetPlayerNumber(int num, Material material)
     {
-        playerNum = num;
+        //sync number with other scripts
+        foreach (Player playerScript in GetComponents<Player>())
+        {
+            playerScript.playerNum = num;
+        }
+
         GetComponent<MeshRenderer>().material = material;
     }
-    public int GetPlayerNumber() => playerNum;
 
 
     PlayerMoveFSM moveFSM;
@@ -87,7 +89,7 @@ public class PlayerInventory : MonoBehaviour
         HasBomb = true;
         collidedPlayerWithBomb = false;
 
-        KeyCode shootKey = moveFSM.GetKeyCode(PlayerMoveFSM.Binding.Shoot);
+        KeyCode shootKey = bm.GetKeyCode(playerNum, BindingManager.Player.Shoot);
         while (!Input.GetKeyDown(shootKey) && !collidedPlayerWithBomb)
         {
             yield return null;
@@ -99,10 +101,11 @@ public class PlayerInventory : MonoBehaviour
         {
             if (col.tag == ObjectTags.Player)
             {
-                PlayerInventory inventory = col.GetComponent<PlayerInventory>();
-                if (inventory.GetPlayerNumber() != this.playerNum)
+                PlayerInventory collidedPlayerInventory = col.GetComponent<PlayerInventory>();
+                //make sure the collided player is not this player
+                if (collidedPlayerInventory.playerNum != this.playerNum) 
                 {
-                    inventory.Health -= bombDamage;
+                    collidedPlayerInventory.Health -= bombDamage;
                 }
             }
         }
