@@ -6,6 +6,6 @@ public class Player : MonoBehaviour
 {
     protected BindingManager bm = BindingManager.instance;
 
-    public int playerNum;
+    [HideInInspector] public int playerNum;
 
 }

@@ -3,6 +3,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+public enum ChestItems
+{
+    Health, Bomb,
+}
+
 public class ChestManager : MonoBehaviour
 {
     List<GameObject> chests = new List<GameObject>();
@@ -13,10 +18,6 @@ public class ChestManager : MonoBehaviour
     [SerializeField] Vector3 spawnBoundary1;
     [SerializeField] Vector3 spawnBoundary2;
 
-    public enum Items
-    {
-        Health, Bomb,
-    }
     [Range(0, 100)] public int chanceOfBombItem;
     public int minAmmoAmount;
     public int maxAmmoAmount;
@@ -64,11 +65,11 @@ public class ChestManager : MonoBehaviour
 
         if (shotChest) //player shot the chest, give player either health or a bomb
         {
-            if (chestData.specialItem == Items.Health)
+            if (chestData.specialItem == ChestItems.Health)
             {
                 inventory.Health++;
             }
-            else if (chestData.specialItem == Items.Bomb)
+            else if (chestData.specialItem == ChestItems.Bomb)
             {
                 inventory.CarryBombRoutine();
             }

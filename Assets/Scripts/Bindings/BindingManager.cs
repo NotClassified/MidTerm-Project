@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public enum PlayerBindings
+{
+    Up, Down, Right, Left, Shoot,
+}
+
 public class BindingManager : MonoBehaviour
 {
     public static BindingManager instance;
 
-    ///<summary> 5 Bindings for Player </summary>
-    public enum Player
-    {
-        Up, Down, Right, Left, Shoot,
-    }
 
     List<BindingsPlayer> playersBindings = new List<BindingsPlayer>();
 
@@ -28,13 +29,13 @@ public class BindingManager : MonoBehaviour
 
     void CreateBindingSet(int playerNum, KeyCode up, KeyCode down, KeyCode right, KeyCode left, KeyCode shoot)
     {
-        EditBinding(playerNum, Player.Up, up);
-        EditBinding(playerNum, Player.Down, down);
-        EditBinding(playerNum, Player.Right, right);
-        EditBinding(playerNum, Player.Left, left);
-        EditBinding(playerNum, Player.Shoot, shoot);
+        EditBinding(playerNum, PlayerBindings.Up, up);
+        EditBinding(playerNum, PlayerBindings.Down, down);
+        EditBinding(playerNum, PlayerBindings.Right, right);
+        EditBinding(playerNum, PlayerBindings.Left, left);
+        EditBinding(playerNum, PlayerBindings.Shoot, shoot);
     }
-    public void EditBinding(int playerNum, Player binding, KeyCode newKeyCode)
+    public void EditBinding(int playerNum, PlayerBindings binding, KeyCode newKeyCode)
     {
         CheckBindingSetExists(playerNum);
 
@@ -45,10 +46,12 @@ public class BindingManager : MonoBehaviour
     {
         while (playersBindings.Count <= playerNum)
         {
-            playersBindings.Add(gameObject.AddComponent<BindingsPlayer>());
+            BindingsPlayer bindings = gameObject.AddComponent<BindingsPlayer>();
+            bindings.keyCodes = new KeyCode[System.Enum.GetNames(typeof(PlayerBindings)).Length];
+            playersBindings.Add(bindings);
         }
     }
 
-    public KeyCode GetKeyCode(int playerNum, Player binding) => playersBindings[playerNum].keyCodes[(int)binding];
+    public KeyCode GetKeyCode(int playerNum, PlayerBindings binding) => playersBindings[playerNum].keyCodes[(int)binding];
 
 }

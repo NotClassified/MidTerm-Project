@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class BindingsPlayer : MonoBehaviour
 {
-    public KeyCode[] keyCodes = new KeyCode[5];
+    public KeyCode[] keyCodes;
 }

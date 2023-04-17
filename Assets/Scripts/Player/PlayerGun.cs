@@ -29,7 +29,7 @@ public class PlayerGun : Player
 
     private void Update()
     {
-        if (Input.GetKey(bm.GetKeyCode(playerNum, BindingManager.Player.Shoot)) && !laser.enabled)
+        if (Input.GetKey(bm.GetKeyCode(playerNum, PlayerBindings.Shoot)) && !laser.enabled)
         {
             if (inventory.Ammo > 0 && !moveFSM.IsCurrentState(PlayerMoveFSM.MoveStates.CarryingBomb))
             {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ChestObject : MonoBehaviour
 {
-    public ChestManager.Items specialItem;
+    public ChestItems specialItem;
     public int ammoAmount;
 
     private void OnEnable()
@@ -14,11 +14,11 @@ public class ChestObject : MonoBehaviour
 
         if (manager.chanceOfBombItem != 0 && (int) (Random.Range(0, 100) / (float)manager.chanceOfBombItem) == 0)
         {
-            specialItem = ChestManager.Items.Bomb;
+            specialItem = ChestItems.Bomb;
         }
         else
         {
-            specialItem = ChestManager.Items.Health;
+            specialItem = ChestItems.Health;
         }
 
         ammoAmount = Random.Range(manager.minAmmoAmount, manager.maxAmmoAmount + 1);

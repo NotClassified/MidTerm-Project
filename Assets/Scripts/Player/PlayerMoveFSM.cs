@@ -24,7 +24,7 @@ public class PlayerMoveFSM : Player
         PlayerInventory.bombChange -= SetBombState;
     }
 
-    public void ChangeState(Type stateType)
+    void ChangeState(Type stateType)
     {
         PlayerMoveState next = null;
         foreach(PlayerMoveState state in states)
@@ -50,15 +50,13 @@ public class PlayerMoveFSM : Player
         currentState = next;
     }
 
-    public void ChangeStateIfNotCurrent(MoveStates state)
+    public void ChangeState(MoveStates state)
     {
-        if (currentState == null)
+        //do not change the state to the same state
+        if (currentState != null && currentState != GetState(state))
             return;
 
-        if (currentState != GetState(state))
-        {
-            ChangeState(GetStateType(state));
-        }
+        ChangeState(GetStateType(state));
     }
 
     private Type GetStateType(MoveStates index) => states[(int)index].GetType();
@@ -87,18 +85,18 @@ public class PlayerMoveFSM : Player
             currentState.OnUpdate();
         }
         else //begin with normal movement
-            ChangeState(GetStateType(MoveStates.Normal));
+            ChangeState(MoveStates.Normal);
 
         if (currentState != GetState(MoveStates.CarryingBomb))
         {
             //player is holding down shoot key
-            if (Input.GetKey(bm.GetKeyCode(playerNum, BindingManager.Player.Shoot))) 
+            if (Input.GetKey(bm.GetKeyCode(playerNum, PlayerBindings.Shoot))) 
             {
-                ChangeStateIfNotCurrent(MoveStates.Shooting);
+                ChangeState(MoveStates.Shooting);
             }
             else
             {
-                ChangeStateIfNotCurrent(MoveStates.Normal);
+                ChangeState(MoveStates.Normal);
             }
         }
 
@@ -110,11 +108,11 @@ public class PlayerMoveFSM : Player
         {
             if (hasBomb)
             {
-                ChangeStateIfNotCurrent(MoveStates.CarryingBomb);
+                ChangeState(MoveStates.CarryingBomb);
             }
             else
             {
-                ChangeStateIfNotCurrent(MoveStates.Normal);
+                ChangeState(MoveStates.Normal);
             }
         }
     }

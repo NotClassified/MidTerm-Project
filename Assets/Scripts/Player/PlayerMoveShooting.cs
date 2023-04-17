@@ -22,22 +22,22 @@ public class PlayerMoveShooting : PlayerMoveState
     {
         base.OnUpdate();
 
-        if (Input.GetKey(bm.GetKeyCode(playerNum, BindingManager.Player.Up)))
+        if (Input.GetKey(bm.GetKeyCode(playerNum, PlayerBindings.Up)))
         {
             movementVertical = Vector3.forward;
         }
-        else if (Input.GetKey(bm.GetKeyCode(playerNum, BindingManager.Player.Down)))
+        else if (Input.GetKey(bm.GetKeyCode(playerNum, PlayerBindings.Down)))
         {
             movementVertical = Vector3.back;
         }
         else
             movementVertical = Vector3.zero;
 
-        if (Input.GetKey(bm.GetKeyCode(playerNum, BindingManager.Player.Right)))
+        if (Input.GetKey(bm.GetKeyCode(playerNum, PlayerBindings.Right)))
         {
             movementHorizontal = Vector3.right;
         }
-        else if (Input.GetKey(bm.GetKeyCode(playerNum, BindingManager.Player.Left)))
+        else if (Input.GetKey(bm.GetKeyCode(playerNum, PlayerBindings.Left)))
         {
             movementHorizontal = Vector3.left;
         }

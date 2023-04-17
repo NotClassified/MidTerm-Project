@@ -89,7 +89,7 @@ public class PlayerInventory : Player
         HasBomb = true;
         collidedPlayerWithBomb = false;
 
-        KeyCode shootKey = bm.GetKeyCode(playerNum, BindingManager.Player.Shoot);
+        KeyCode shootKey = bm.GetKeyCode(playerNum, PlayerBindings.Shoot);
         while (!Input.GetKeyDown(shootKey) && !collidedPlayerWithBomb)
         {
             yield return null;
