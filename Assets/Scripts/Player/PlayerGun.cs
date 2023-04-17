@@ -70,23 +70,6 @@ public class PlayerGun : Player
 
     IEnumerator ShootingLaserRoutine()
     {
-        ////canceling laser
-        //bool cancelLaser = false;
-        //float time = 0;
-        //while (time / (laserSpeed / 2) < 1)
-        //{
-        //    time += Time.deltaTime;
-        //    yield return null;
-        //    if (Input.GetKeyDown(moveFSM.GetKeyCode(BindingManager.Player.Shoot)))
-        //    {
-        //        cancelLaser = true;
-        //    }
-        //}
-        //if (!cancelLaser)
-        //{
-        //    ShootLaser();
-        //}
-
         yield return new WaitForSeconds(laserSpeed / 2); //wait for charge
         ShootLaser();
     }

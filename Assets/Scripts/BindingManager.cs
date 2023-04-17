@@ -50,16 +50,5 @@ public class BindingManager : MonoBehaviour
     }
 
     public KeyCode GetKeyCode(int playerNum, Player binding) => playersBindings[playerNum].keyCodes[(int)binding];
-    
 
-    //void SetPlayerBindings(PlayerInventory inventory)
-    //{
-    //    int playerNum = inventory.GetPlayerNumber();
-
-    //    playersBindings[playerNum].keyCodes = 
-    //}
-    //public KeyCode GetPlayerBinding(int playerNum, Player binding)
-    //{
-    //    return 
-    //}
 }

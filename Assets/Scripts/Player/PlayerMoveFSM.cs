@@ -13,16 +13,6 @@ public class PlayerMoveFSM : Player
         Normal, Shooting, CarryingBomb
     }
 
-    //public KeyCode[] inputBindings;
-    //public KeyCode GetKeyCode(BindingManager.Player b)
-    //{
-    //    return inputBindings[(int) b];
-    //}
-    //public void SetBinding(BindingManager.Player binding, KeyCode key)
-    //{
-    //    inputBindings[(int)binding] = key;
-    //}
-
     private void Awake()
     {
         states = GetComponents<PlayerMoveState>();
