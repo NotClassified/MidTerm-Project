@@ -53,7 +53,7 @@ public class PlayerMoveFSM : Player
     public void ChangeState(MoveStates state)
     {
         //do not change the state to the same state
-        if (currentState != null && currentState != GetState(state))
+        if (currentState != null && currentState == GetState(state))
             return;
 
         ChangeState(GetStateType(state));

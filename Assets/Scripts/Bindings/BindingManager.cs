@@ -11,7 +11,7 @@ public enum PlayerBindings
 public class BindingManager : MonoBehaviour
 {
     public static BindingManager instance;
-
+    private BindingDataManager dataManager;
 
     List<BindingsPlayer> playersBindings = new List<BindingsPlayer>();
 
@@ -19,12 +19,34 @@ public class BindingManager : MonoBehaviour
     {
         instance = this;
 
-        //Player 1
-        CreateBindingSet(playersBindings.Count, 
-            KeyCode.W, KeyCode.S, KeyCode.D, KeyCode.A, KeyCode.Space);
-        //Player 2
-        CreateBindingSet(playersBindings.Count, 
-            KeyCode.UpArrow, KeyCode.DownArrow, KeyCode.RightArrow, KeyCode.LeftArrow, KeyCode.Keypad0);
+
+        dataManager = GetComponent<BindingDataManager>();
+        dataManager.LoadData();
+    }
+    private void Start()
+    {
+        //load in the binding sets
+        if (dataManager.currentData.bindingSets.Count >= 2)
+        {
+            for (int i = 0; i < dataManager.currentData.bindingSets.Count; i++)
+            {
+                int[] keyCodeIndexData = dataManager.currentData.bindingSets[i].keyCodeIndices;
+                CreateBindingSet(i, keyCodeIndexData);
+            }
+        }
+        else //there are no saved bindings, create default
+        {
+            CreateDefaultBindings();
+            CreateDataCollection();
+        }
+
+        FindObjectOfType<ScreenUIManager>().UpdateBindings();
+    }
+
+    void CreateBindingSet(int playerNum, int[] keyIndices)
+    {
+        CreateBindingSet(playerNum, (KeyCode)keyIndices[0], (KeyCode)keyIndices[1], 
+                                    (KeyCode)keyIndices[2], (KeyCode)keyIndices[3], (KeyCode)keyIndices[4]);
     }
 
     void CreateBindingSet(int playerNum, KeyCode up, KeyCode down, KeyCode right, KeyCode left, KeyCode shoot)
@@ -52,6 +74,44 @@ public class BindingManager : MonoBehaviour
         }
     }
 
-    public KeyCode GetKeyCode(int playerNum, PlayerBindings binding) => playersBindings[playerNum].keyCodes[(int)binding];
+    public KeyCode GetKeyCode(int playerNum, PlayerBindings binding)
+    {
+        return playersBindings[playerNum].keyCodes[(int)binding];
+    }
 
+    void CreateDefaultBindings()
+    {
+        //Player 1
+        CreateBindingSet(playersBindings.Count,
+            KeyCode.W, KeyCode.S, KeyCode.D, KeyCode.A, KeyCode.Space);
+        //Player 2
+        CreateBindingSet(playersBindings.Count,
+            KeyCode.UpArrow, KeyCode.DownArrow, KeyCode.RightArrow, KeyCode.LeftArrow, KeyCode.Keypad0);
+    }
+
+    void CreateDataCollection()
+    {
+        BindingDataCollection collection = new BindingDataCollection();
+
+        for (int i = 0; i < playersBindings.Count; i++)
+        {
+            BindingDataObject bindingSet = new BindingDataObject();
+
+            int[] newKeyCodeIndices = new int[GetAmountOfPlayerBindings()];
+            for (int keyIndex = 0; keyIndex < playersBindings[i].keyCodes.Length; keyIndex++)
+            {
+                newKeyCodeIndices[keyIndex] = (int) playersBindings[i].keyCodes[keyIndex];
+            }
+
+            bindingSet.keyCodeIndices = newKeyCodeIndices;
+            collection.bindingSets.Add(bindingSet);
+        }
+
+        dataManager.SaveData(collection);
+    }
+
+    public int GetAmountOfPlayerBindings() => System.Enum.GetNames(typeof(PlayerBindings)).Length;
+
+    public BindingsPlayer GetBindingSet(int setIndex) => playersBindings[setIndex];
+    public int GetBindingSetAmount() => playersBindings.Count;
 }

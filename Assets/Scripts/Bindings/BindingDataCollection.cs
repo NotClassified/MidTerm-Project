@@ -4,5 +4,5 @@ using System.Collections.Generic;
 [System.Serializable]
 public class BindingDataCollection
 {
-    public List<BindingDataObject> collection = new List<BindingDataObject>();
+    public List<BindingDataObject> bindingSets = new List<BindingDataObject>();
 }
