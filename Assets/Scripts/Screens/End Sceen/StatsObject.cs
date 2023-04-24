@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScreenButtonComponent : MonoBehaviour
+public class StatsObject
 {
-    public ScreenButton button;
+    public int[] statsData;
 }

@@ -12,6 +12,7 @@ public class BindingManager : MonoBehaviour
 {
     public static BindingManager instance;
     private BindingDataManager dataManager;
+    private PauseScreenUIManager pauseManager;
 
     List<BindingsPlayer> playersBindings = new List<BindingsPlayer>();
 
@@ -19,7 +20,7 @@ public class BindingManager : MonoBehaviour
     {
         instance = this;
 
-
+        pauseManager = FindObjectOfType<PauseScreenUIManager>();
         dataManager = GetComponent<BindingDataManager>();
         dataManager.LoadData();
     }
@@ -37,10 +38,10 @@ public class BindingManager : MonoBehaviour
         else //there are no saved bindings, create default
         {
             CreateDefaultBindings();
-            CreateDataCollection();
+            CreateAndSaveDataCollection();
         }
 
-        FindObjectOfType<ScreenUIManager>().UpdateBindings();
+        pauseManager.UpdateBindings();
     }
 
     void CreateBindingSet(int playerNum, int[] keyIndices)
@@ -89,7 +90,7 @@ public class BindingManager : MonoBehaviour
             KeyCode.UpArrow, KeyCode.DownArrow, KeyCode.RightArrow, KeyCode.LeftArrow, KeyCode.Keypad0);
     }
 
-    void CreateDataCollection()
+    public void CreateAndSaveDataCollection()
     {
         BindingDataCollection collection = new BindingDataCollection();
 

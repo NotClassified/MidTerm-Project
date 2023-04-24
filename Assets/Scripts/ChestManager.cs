@@ -15,12 +15,19 @@ public class ChestManager : MonoBehaviour
 
     [SerializeField] int chestAmount;
     [SerializeField] float chestSpawnDelay;
-    [SerializeField] Vector3 spawnBoundary1;
-    [SerializeField] Vector3 spawnBoundary2;
+    Vector3 spawnBoundary1;
+    Vector3 spawnBoundary2;
 
     [Range(0, 100)] public int chanceOfBombItem;
     public int minAmmoAmount;
     public int maxAmmoAmount;
+
+    private void Awake()
+    {
+        LevelFSM levelManager = FindObjectOfType<LevelFSM>();
+        spawnBoundary1 = levelManager.spawnBoundary1;
+        spawnBoundary2 = levelManager.spawnBoundary2;
+    }
 
     IEnumerator Start()
     {
@@ -83,12 +90,6 @@ public class ChestManager : MonoBehaviour
         Destroy(chest);
     }
 
-    public static Vector3 RandomVector3Range(Vector3 min, Vector3 max)
-    {
-        return new Vector3(UnityEngine.Random.Range(min.x, max.x), 
-                            UnityEngine.Random.Range(min.y, max.y), 
-                            UnityEngine.Random.Range(min.z, max.z));
-    }
     public static Vector3 RandomVector3Range(Vector3 min, Vector3 max, float snap)
     {
         float x = SnapNum(UnityEngine.Random.Range(min.x, max.x), snap);

@@ -13,6 +13,11 @@ public class BindingDataManager : MonoBehaviour
         string json = JsonUtility.ToJson(collection, true);
         Debug.Log(json);
 
+        if (IsFileExists())
+        {
+            File.Delete(Application.persistentDataPath + "/Bindings.json");
+        }
+
         using (FileStream stream = File.Open(Application.persistentDataPath + "/Bindings.json", 
             FileMode.OpenOrCreate, FileAccess.ReadWrite))
         {
@@ -27,7 +32,7 @@ public class BindingDataManager : MonoBehaviour
     {
         if (CreateEmptyFile())
             return;
-        Debug.Log(Application.persistentDataPath + "/Bindings.json");
+        //Debug.Log(Application.persistentDataPath + "/Bindings.json");
 
         using (FileStream stream = File.Open(Application.persistentDataPath + "/Bindings.json", 
             FileMode.Open, FileAccess.ReadWrite))

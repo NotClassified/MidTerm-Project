@@ -10,15 +10,23 @@ public enum ScreenType
 
 public class ScreenFSM : MonoBehaviour
 {
-
     ScreenState[] states;
     ScreenState currentState;
 
     private void Awake()
     {
         states = GetComponents<ScreenState>();
+        PlayerInventory.playerDied += EndingScreen;
+    }
+    private void OnDestroy()
+    {
+        PlayerInventory.playerDied -= EndingScreen;
     }
 
+    void EndingScreen(int losingPlayerNum)
+    {
+        ChangeState(ScreenType.End);
+    }
 
     public void ChangeState(Type stateType)
     {
@@ -49,9 +57,8 @@ public class ScreenFSM : MonoBehaviour
     public void ChangeState(ScreenType state)
     {
         //do not change the state to the same state
-        if (currentState != null && currentState != GetState(state))
+        if (currentState != null && currentState == GetState(state))
             return;
-
         ChangeState(GetStateType(state));
     }
 

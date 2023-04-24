@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 [ExecuteInEditMode]
@@ -18,6 +19,9 @@ public class BindingButtonComponent : MonoBehaviour
         lastBinding = binding;
         name_Text = transform.Find("Binding Name").GetComponent<TextMeshProUGUI>();
         keyCode_Text = transform.Find("KeyCode").GetComponent<TextMeshProUGUI>();
+
+        PauseScreenUIManager manager = FindObjectOfType<PauseScreenUIManager>();
+        GetComponent<Button>().onClick.AddListener(delegate { manager.SetBinding(this); });
     }
 
     private void Update()

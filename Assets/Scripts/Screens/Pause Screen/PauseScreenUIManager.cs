@@ -5,20 +5,21 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 [System.Serializable]
-public enum ScreenButton
+public enum PauseScreenButton
 {
-    Play, Restart, Settings, Bindings
+    Play, Restart, Settings, Bindings, Back, Save, RestartYes, RestartNo
 }
 public enum PauseScreen
 {
     Main, Settings, Bindings, RestartPrompt
 }
 
-public class ScreenUIManager : MonoBehaviour
+public class PauseScreenUIManager : MonoBehaviour
 {
     ScreenFSM fsm;
     BindingManager bindingManager;
     GameObject[] pauseScreens;
+    GameObject backButton;
     BindingButtonComponent[] bindingButtonComponents;
 
     private void Awake()
@@ -30,12 +31,15 @@ public class ScreenUIManager : MonoBehaviour
         if (bindingManager == null)
             Debug.LogError("could not find BindingManager");
 
-        //setting references to the different pause screens
+        //setting references to the different pause screens and back button
         pauseScreens = new GameObject[System.Enum.GetNames(typeof(PauseScreen)).Length];
         pauseScreens[(int)PauseScreen.Main] = transform.Find("Main Screen").gameObject;
         pauseScreens[(int)PauseScreen.Settings] = transform.Find("Settings Screen").gameObject;
         pauseScreens[(int)PauseScreen.Bindings] = transform.Find("Bindings Screen").gameObject;
         pauseScreens[(int)PauseScreen.RestartPrompt] = transform.Find("Restart Prompt").gameObject;
+
+        backButton = transform.Find("Back Button").gameObject;
+        transform.Find("Background").gameObject.SetActive(true);
 
         bindingButtonComponents =
             pauseScreens[(int)PauseScreen.Bindings].GetComponentsInChildren<BindingButtonComponent>();
@@ -52,28 +56,48 @@ public class ScreenUIManager : MonoBehaviour
         }
     }
 
+    public void Restart()
+    {
+        SceneManager.LoadScene(0); //reload this scene
+    }
+
     public void ClickButton(ScreenButtonComponent component)
     {
         switch (component.button)
         {
-            case ScreenButton.Play:
+            case PauseScreenButton.Play: //Unpause
                 fsm.ChangeState(ScreenType.Game);
                 break;
 
-            case ScreenButton.Restart:
-                
-                SceneManager.LoadScene(0); //reload this scene
+            case PauseScreenButton.Restart:
+                ChangePauseScreen(PauseScreen.RestartPrompt);
                 break;
 
-            case ScreenButton.Settings:
+            case PauseScreenButton.RestartYes:
+                Restart();
+                break;
+
+            case PauseScreenButton.RestartNo:
+                ChangePauseScreen(PauseScreen.Main);
+                break;
+
+            case PauseScreenButton.Settings:
                 ChangePauseScreen(PauseScreen.Settings);
                 break;
 
-            case ScreenButton.Bindings:
+            case PauseScreenButton.Bindings:
                 ChangePauseScreen(PauseScreen.Bindings);
                 break;
 
+            case PauseScreenButton.Back:
+                ChangePauseScreen(PauseScreen.Main);
+                break;
+
+            case PauseScreenButton.Save:
+                bindingManager.CreateAndSaveDataCollection();
+                break;
             default:
+                Debug.LogError(component.button + " does not have a case set up");
                 break;
         }
     }
@@ -108,10 +132,21 @@ public class ScreenUIManager : MonoBehaviour
             bindingSets[i] = bindingManager.GetBindingSet(i);
         }
 
+        //activate bindings screen if not active, to make sure all binding component references are set
+        GameObject bindingsScreen = pauseScreens[(int)PauseScreen.Bindings];
+        bool activatedBindingsScreen = false;
+        if (!bindingsScreen.activeSelf)
+        {
+            bindingsScreen.SetActive(true);
+            activatedBindingsScreen = true;
+        }
+
         foreach (BindingButtonComponent component in bindingButtonComponents)
         {
             component.SetKeyCodeText(bindingSets[component.playerNum].keyCodes[(int)component.binding]);
         }
+        //deactivate bindings screen if it was activated
+        pauseScreens[(int)PauseScreen.Bindings].SetActive(!activatedBindingsScreen);
     }
 
     void ChangePauseScreen(PauseScreen newScreen)
@@ -128,5 +163,23 @@ public class ScreenUIManager : MonoBehaviour
                 pauseScreens[i].SetActive(false);
             }
         }
+        //show back button if not on main pause screen
+        backButton.SetActive(!pauseScreens[(int)PauseScreen.Main].activeSelf);
+    }
+    void HideAllPauseScreens()
+    {
+        pauseScreens[GetActivePauseScreen()].SetActive(false);
+    }
+
+    int GetActivePauseScreen()
+    {
+        for (int i = 0; i < pauseScreens.Length; i++)
+        {
+            if (pauseScreens[i].activeSelf)
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 }

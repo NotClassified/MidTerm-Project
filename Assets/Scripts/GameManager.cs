@@ -7,26 +7,39 @@ using System;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    ScreenFSM screenFSM;
 
     public enum SpawnPoints
     {
         Player1, Player2
     }
 
-    [SerializeField] int playerAmount;
+    public int playerAmount;
     [SerializeField] GameObject playerPrefab;
-    public GameObject[] playerObjects;
+    [HideInInspector] public GameObject[] playerObjects;
     public Material[] playerMaterials;
     [SerializeField] int startingHealth;
     [SerializeField] int startingAmmo;
+    public int maxHealth;
+    public int maxAmmo;
 
     private void Awake()
     {
         instance = this;
+        screenFSM = FindObjectOfType<ScreenFSM>();
+
         playerObjects = new GameObject[playerAmount];
+
+        PlayerInventory.playerDied += GameOver;
+        ScreenGame.GameHasStarted += GameStart;
+    }
+    private void OnDestroy()
+    {
+        PlayerInventory.playerDied -= GameOver;
+        ScreenGame.GameHasStarted -= GameStart;
     }
 
-    private void Start()
+    public void GameStart()
     {
         for (int i = 0; i < playerAmount; i++)
         {
@@ -36,9 +49,9 @@ public class GameManager : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.Escape) && screenFSM.IsCurrentState(ScreenType.Game))
         {
-            SceneManager.LoadScene(0);
+            screenFSM.ChangeState(ScreenType.Pause);
         }
     }
 

@@ -17,6 +17,9 @@ public class PlayerGun : Player
     PlayerMoveFSM moveFSM;
     PlayerInventory inventory;
 
+    ///<summary> (int playerNum, string hit'sObjectTag) </summary>
+    public static event Action<int, string> gunAction;
+
     private void Awake()
     {
         laser = GetComponent<LineRenderer>();
@@ -93,18 +96,17 @@ public class PlayerGun : Player
         {
             hit.transform.GetComponent<PlayerInventory>().DealDamage(1);
         }
-        else if (hitsTag.Equals(ObjectTags.Wall)) //do nothing -_-
-        {
-            //print(ObjectTags.Wall);
-        }
         else if (hitsTag.Equals(ObjectTags.BreakableWall)) //destroy wall
         {
-            Destroy(hit.transform.gameObject);
+            hit.transform.gameObject.SetActive(false);
         }
         else if (hitsTag.Equals(ObjectTags.Chest)) //open chest
         {
             FindObjectOfType<ChestManager>().OpenChest(hit.transform.gameObject, gameObject, true);
         }
+
+        if (gunAction != null)
+            gunAction(playerNum, hitsTag);
     }
 
 }

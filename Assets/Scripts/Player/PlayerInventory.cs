@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 
 public class PlayerInventory : Player
 {
     [SerializeField] float bombRadius;
     [SerializeField] int bombDamage;
+    [SerializeField] Image bombIndicatorSprite;
+    [SerializeField] AnimationCurve bombIndicatorTransparencyCurve;
+    [SerializeField] float bombRadiusTransparencyDuration;
 
     int health;
     int ammo;
@@ -17,6 +21,9 @@ public class PlayerInventory : Player
         set
         {
             health = value;
+            if (health > GameManager.instance.maxHealth)
+                health = GameManager.instance.maxHealth;
+
             healthChange(playerNum, health);
         }
     }
@@ -26,6 +33,9 @@ public class PlayerInventory : Player
         set
         {
             ammo = value;
+            if (ammo > GameManager.instance.maxAmmo)
+                ammo = GameManager.instance.maxAmmo;
+
             ammoChange(playerNum, ammo);
         }
     }
@@ -57,19 +67,21 @@ public class PlayerInventory : Player
     public static event Action<int, int> healthChange;
     public static event Action<int, int> ammoChange;
     public static event Action<int, bool> bombChange;
+    public static event Action<int> playerDied;
 
     private void Awake()
     {
         moveFSM = GetComponent<PlayerMoveFSM>();
+        bombIndicatorSprite.gameObject.SetActive(false);
     }
 
     ///<summary> returns health amount left </summary>
     public int DealDamage(int damage)
     {
         Health -= damage;
-        if (Health <= 0)
+        if (Health <= 0 && playerDied != null)
         {
-            GameManager.instance.GameOver(playerNum);
+            playerDied(playerNum);
         }
         return Health;
     }
@@ -89,11 +101,27 @@ public class PlayerInventory : Player
         HasBomb = true;
         collidedPlayerWithBomb = false;
 
+        bombIndicatorSprite.gameObject.SetActive(true);
+        var color = bombIndicatorSprite.color;
+        float time = 0;
+        if (bombRadiusTransparencyDuration == 0f)
+            bombRadiusTransparencyDuration = 1f;
+
         KeyCode shootKey = bm.GetKeyCode(playerNum, PlayerBindings.Shoot);
         while (!Input.GetKeyDown(shootKey) && !collidedPlayerWithBomb)
         {
+            if (time < bombRadiusTransparencyDuration)
+            {
+                time += Time.deltaTime;
+                color.a = bombIndicatorTransparencyCurve.Evaluate(time / bombRadiusTransparencyDuration);
+                bombIndicatorSprite.color = color;
+            }
+            else
+                time = 0f;
             yield return null;
         }
+        bombIndicatorSprite.gameObject.SetActive(false);
+
         //player has activated bomb or has collided with a player
         //damage all nearby players
         Collider[] colliders = Physics.OverlapSphere(transform.position, bombRadius);
@@ -105,7 +133,7 @@ public class PlayerInventory : Player
                 //make sure the collided player is not this player
                 if (collidedPlayerInventory.playerNum != this.playerNum) 
                 {
-                    collidedPlayerInventory.Health -= bombDamage;
+                    collidedPlayerInventory.DealDamage(bombDamage);
                 }
             }
         }
