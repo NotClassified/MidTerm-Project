@@ -94,7 +94,7 @@ public class PlayerGun : Player
         string hitsTag = hit.transform.tag;
         if (hitsTag.Equals(ObjectTags.Player)) //damage opposing player
         {
-            hit.transform.GetComponent<PlayerInventory>().DealDamage(1);
+            hit.transform.GetComponent<PlayerInventory>().DealDamage(1, hit.point);
         }
         else if (hitsTag.Equals(ObjectTags.BreakableWall)) //destroy wall
         {

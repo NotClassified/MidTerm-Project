@@ -65,6 +65,8 @@ public class PlayerInventory : Player
     PlayerMoveFSM moveFSM;
 
     public static event Action<int, int> healthChange;
+    ///<summary> int playerNumber, Vector3 damageSourcePos </summary>
+    public static event Action<int, Vector3> playerDamaged;
     public static event Action<int, int> ammoChange;
     public static event Action<int, bool> bombChange;
     public static event Action<int> playerDied;
@@ -76,13 +78,14 @@ public class PlayerInventory : Player
     }
 
     ///<summary> returns health amount left </summary>
-    public int DealDamage(int damage)
+    public int DealDamage(int damage, Vector3 damagePos)
     {
         Health -= damage;
         if (Health <= 0 && playerDied != null)
         {
             playerDied(playerNum);
         }
+        playerDamaged(playerNum, damagePos);
         return Health;
     }
 
@@ -133,7 +136,7 @@ public class PlayerInventory : Player
                 //make sure the collided player is not this player
                 if (collidedPlayerInventory.playerNum != this.playerNum) 
                 {
-                    collidedPlayerInventory.DealDamage(bombDamage);
+                    collidedPlayerInventory.DealDamage(bombDamage, transform.position);
                 }
             }
         }

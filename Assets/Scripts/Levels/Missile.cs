@@ -41,7 +41,15 @@ public class Missile : MonoBehaviour
             {
                 if (col.tag == ObjectTags.Player)
                 {
-                    col.GetComponent<PlayerInventory>().DealDamage(missileDamage);
+                    col.GetComponent<PlayerInventory>().DealDamage(missileDamage, transform.position);
+                }
+                else if (col.tag == ObjectTags.Wall || col.tag == ObjectTags.BreakableWall)
+                {
+                    Destroy(col.gameObject);
+                }
+                else if (col.tag == ObjectTags.Chest)
+                {
+                    FindObjectOfType<ChestPooler>().ReleaseChestInstance(col.gameObject);
                 }
             }
 

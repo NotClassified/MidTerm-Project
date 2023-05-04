@@ -164,6 +164,7 @@ GameObject:
   m_Component:
   - component: {fileID: 10734784}
   - component: {fileID: 10734785}
+  - component: {fileID: 10734786}
   m_Layer: 0
   m_Name: ChestManager
   m_TagString: Untagged
@@ -198,12 +199,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae08e75327704674386c67338673ea13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chestPrefab: {fileID: 2617085866096103498, guid: 1f393074f92dc444cb7cd3ed72e355ea, type: 3}
-  chestAmount: 10
   chestSpawnDelay: 4
-  chanceOfBombItem: 25
+  chanceOfBombItem: 40
   minAmmoAmount: 3
   maxAmmoAmount: 5
+--- !u!114 &10734786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10734783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1a10263f59d56c4f9c5b3fb0615dfe5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chestPrefab: {fileID: 2617085866096103498, guid: 1f393074f92dc444cb7cd3ed72e355ea, type: 3}
+  chestAmount: 5
 --- !u!1 &25270954
 GameObject:
   m_ObjectHideFlags: 0
@@ -4431,7 +4444,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 598407212}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -22, y: 0, z: -10.25}
+  m_LocalPosition: {x: -21.5, y: 0, z: -10.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9431,8 +9444,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   missilePrefab: {fileID: 8976334822496917468, guid: bbc1bb2477dae1b4ca89da9963ab5f0e, type: 3}
-  missileFrequency: 2
-  missileSpeed: 2.5
+  missileFrequency: 3
+  missileFrequencyAcceleration: 50
+  missileSpeed: 3
   missileEndScale: 10
   missileEndTransparency: 0.8
   missileRadius: 3
@@ -9462,7 +9476,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 594fffc06114e7844814a33c27787927, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timerDuration: 120
+  timerDuration: 60
 --- !u!114 &1195249304
 MonoBehaviour:
   m_ObjectHideFlags: 0

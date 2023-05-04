@@ -17,7 +17,6 @@ public class PlayerMoveFSM : Player
     {
         states = GetComponents<PlayerMoveState>();
         PlayerInventory.bombChange += SetBombState;
-
     }
     private void OnDestroy()
     {

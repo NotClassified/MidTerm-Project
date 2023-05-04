@@ -7,6 +7,7 @@ public class LevelMissiles : LevelState
     [SerializeField] GameObject missilePrefab;
     float time;
     [SerializeField] float missileFrequency;
+    [SerializeField] float missileFrequencyAcceleration;
     [SerializeField] float missileSpeed;
     [SerializeField] float missileEndScale;
     [SerializeField] float missileEndTransparency;
@@ -40,6 +41,10 @@ public class LevelMissiles : LevelState
             Vector3 spawn = LevelFSM.RandomVector3Range(spawnBoundary1, spawnBoundary2);
             Instantiate(missilePrefab, spawn, new Quaternion());
             time = 0;
+        }
+        if (missileFrequency > .2f)
+        {
+            missileFrequency -=  (missileFrequencyAcceleration / 1000f) * missileFrequency * Time.deltaTime;
         }
     }
 }

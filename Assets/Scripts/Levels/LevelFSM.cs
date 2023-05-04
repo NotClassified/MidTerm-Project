@@ -37,7 +37,7 @@ public class LevelFSM : MonoBehaviour
     }
 
     void GameStart() => ChangeState(LevelMode.Normal);
-    void NormalLevelStateFinished() => ChangeState(LevelMode.Collapse);
+    void NormalLevelStateFinished() => ChangeState(LevelMode.Missiles);
     void CollapsingFinished()
     {
         ChangeState(LevelMode.Missiles);

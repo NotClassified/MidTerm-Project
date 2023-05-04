@@ -1,5 +1,4 @@
 using UnityEngine;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -10,10 +9,6 @@ public enum ChestItems
 
 public class ChestManager : MonoBehaviour
 {
-    List<GameObject> chests = new List<GameObject>();
-    [SerializeField] GameObject chestPrefab;
-
-    [SerializeField] int chestAmount;
     [SerializeField] float chestSpawnDelay;
     Vector3 spawnBoundary1;
     Vector3 spawnBoundary2;
@@ -21,6 +16,24 @@ public class ChestManager : MonoBehaviour
     [Range(0, 100)] public int chanceOfBombItem;
     public int minAmmoAmount;
     public int maxAmmoAmount;
+
+    private ChestPooler chestPooler;
+    private ChestPooler PoolerInstance
+    {
+        get
+        {
+            if (chestPooler == null)
+            {
+                var pooler = FindObjectOfType<ChestPooler>();
+                if (pooler == null)
+                    Debug.LogError("chestpooler not found");
+                else
+                    chestPooler = pooler;
+            }
+            return chestPooler;
+        }
+    }
+
 
     private void Awake()
     {
@@ -31,28 +44,37 @@ public class ChestManager : MonoBehaviour
 
     IEnumerator Start()
     {
+        WaitForSeconds chestCooldown = new WaitForSeconds(chestSpawnDelay);
 
-        foreach(Transform child in transform)
-        {
-            chests.Add(child.gameObject);
-        }
-
+        yield return chestCooldown;
         while (true)
         {
-            while (chests.Count >= chestAmount)
-                yield return null;
-            yield return new WaitForSeconds(chestSpawnDelay);
-
             NewChest();
+            yield return chestCooldown;
         }
     }
 
     void NewChest()
     {
-        float snap = .25f;
-        var spawnPos = FindEmptySpace(spawnBoundary1, spawnBoundary2, chestPrefab.transform.lossyScale / 2f, snap);
 
-        chests.Add(Instantiate(chestPrefab, spawnPos, new Quaternion(), transform));
+        var chestObj = PoolerInstance.GetChestInstance();
+        if (chestObj != null)
+        {
+            //set position of the chest
+            float snap = .25f;
+            var spawnPos = FindEmptySpace(spawnBoundary1, spawnBoundary2, 
+                                            PoolerInstance.chestPrefab.transform.lossyScale / 2f, snap);
+            chestObj.transform.position = spawnPos;
+
+            //set chest data
+            var chestScript = chestObj.GetComponent<ChestObject>();
+            if ((int)(Random.Range(0, 100) / (float)chanceOfBombItem) == 0)
+                chestScript.specialItem = ChestItems.Bomb;
+            else
+                chestScript.specialItem = ChestItems.Health;
+
+            chestScript.ammoAmount = Random.Range(minAmmoAmount, maxAmmoAmount + 1);
+        }
     }
     Vector3 FindEmptySpace(Vector3 boundary1, Vector3 boundary2, Vector3 halfExtent, float snap)
     {
@@ -68,26 +90,28 @@ public class ChestManager : MonoBehaviour
     public void OpenChest(GameObject chest, GameObject player, bool shotChest)
     {
         PlayerInventory inventory = player.GetComponent<PlayerInventory>();
-        ChestObject chestData = chest.GetComponent<ChestObject>();
+        ChestObject chestScript = chest.GetComponent<ChestObject>();
 
         if (shotChest) //player shot the chest, give player either health or a bomb
         {
-            if (chestData.specialItem == ChestItems.Health)
+            switch (chestScript.specialItem)
             {
-                inventory.Health++;
-            }
-            else if (chestData.specialItem == ChestItems.Bomb)
-            {
-                inventory.CarryBombRoutine();
+                case ChestItems.Health:
+                    inventory.Health++;
+                    break;
+                case ChestItems.Bomb:
+                    inventory.CarryBombRoutine();
+                    break;
+                default:
+                    break;
             }
         }
         else //player collided with the chest, give player ammo
         {
-            inventory.Ammo += chestData.ammoAmount;
+            inventory.Ammo += chestScript.ammoAmount;
         }
 
-        chests.Remove(chest);
-        Destroy(chest);
+        PoolerInstance.ReleaseChestInstance(chest);
     }
 
     public static Vector3 RandomVector3Range(Vector3 min, Vector3 max, float snap)
@@ -99,7 +123,7 @@ public class ChestManager : MonoBehaviour
         return new Vector3(x, y, z);
     }
 
-    public static float SnapNum (float num, float snap) => MathF.Round(num / snap) * snap;
+    public static float SnapNum (float num, float snap) => Mathf.Round(num / snap) * snap;
 
     public static bool InBoundary(Vector3 point, Vector3 boundary1, Vector3 boundary2)
     {

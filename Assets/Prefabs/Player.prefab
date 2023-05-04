@@ -174,8 +174,8 @@ MonoBehaviour:
   playerNum: 0
   speed: 0
   turnSpeed: 2500
-  speedWithAmmo: 6.75
-  speedNoAmmo: 9
+  speedWithAmmo: 9
+  speedNoAmmo: 10
 --- !u!114 &-9168833445971312459
 MonoBehaviour:
   m_ObjectHideFlags: 0
