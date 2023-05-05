@@ -4,15 +4,31 @@ using UnityEngine;
 
 public class LevelMissiles : LevelState
 {
-    [SerializeField] GameObject missilePrefab;
+    private MissilePooler missilePooler;
+    private MissilePooler PoolerInstance
+    {
+        get
+        {
+            if (missilePooler == null)
+            {
+                var pooler = FindObjectOfType<MissilePooler>();
+                if (pooler == null)
+                    Debug.LogError("chestpooler not found");
+                else
+                    missilePooler = pooler;
+            }
+            return missilePooler;
+        }
+    }
+
     float time;
-    [SerializeField] float missileFrequency;
-    [SerializeField] float missileFrequencyAcceleration;
-    [SerializeField] float missileSpeed;
-    [SerializeField] float missileEndScale;
-    [SerializeField] float missileEndTransparency;
-    [SerializeField] float missileRadius;
-    [SerializeField] int missileDamage;
+    public float missileFrequency;
+    public float missileFrequencyAcceleration;
+    public float missileSpeed;
+    public float missileEndScale;
+    public float missileEndTransparency;
+    public float missileRadius;
+    public int missileDamage;
 
     Vector3 spawnBoundary1;
     Vector3 spawnBoundary2;
@@ -23,12 +39,6 @@ public class LevelMissiles : LevelState
 
         spawnBoundary1 = fsm.spawnBoundary1;
         spawnBoundary2 = fsm.spawnBoundary2;
-        Missile missileScript = missilePrefab.GetComponent<Missile>();
-        missileScript.missileSpeed = this.missileSpeed;
-        missileScript.missileEndScale = this.missileEndScale;
-        missileScript.missileEndTransparency = this.missileEndTransparency;
-        missileScript.missileRadius = this.missileRadius;
-        missileScript.missileDamage = this.missileDamage;
     }
 
     public override void OnUpdate()
@@ -38,8 +48,8 @@ public class LevelMissiles : LevelState
         time += Time.deltaTime;
         if (time > missileFrequency)
         {
-            Vector3 spawn = LevelFSM.RandomVector3Range(spawnBoundary1, spawnBoundary2);
-            Instantiate(missilePrefab, spawn, new Quaternion());
+            var missile = PoolerInstance.GetMissileInstance();
+            missile.transform.position = LevelFSM.RandomVector3Range(spawnBoundary1, spawnBoundary2);
             time = 0;
         }
         if (missileFrequency > .2f)

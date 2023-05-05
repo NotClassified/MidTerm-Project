@@ -44,13 +44,10 @@ public class ChestManager : MonoBehaviour
 
     IEnumerator Start()
     {
-        WaitForSeconds chestCooldown = new WaitForSeconds(chestSpawnDelay);
-
-        yield return chestCooldown;
         while (true)
         {
+            yield return new WaitForSeconds(chestSpawnDelay);
             NewChest();
-            yield return chestCooldown;
         }
     }
 
