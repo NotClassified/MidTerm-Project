@@ -7,11 +7,11 @@ public class ChestPooler : MonoBehaviour
     public GameObject chestPrefab;
     List<GameObject> chests = new List<GameObject>();
 
-    [SerializeField] int chestAmount;
+    [SerializeField] int maxChestAmount;
 
     private void Start()
     {
-        for (int i = 0; i < chestAmount; i++)
+        for (int i = 0; i < maxChestAmount; i++)
         {
             GameObject chest = Instantiate(chestPrefab, transform);
             chest.SetActive(false);

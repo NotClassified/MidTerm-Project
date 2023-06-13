@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chestPrefab: {fileID: 2617085866096103498, guid: 1f393074f92dc444cb7cd3ed72e355ea, type: 3}
-  chestAmount: 5
+  maxChestAmount: 5
 --- !u!1 &25270954
 GameObject:
   m_ObjectHideFlags: 0
@@ -9490,7 +9490,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   missileFrequency: 3
-  missileFrequencyAcceleration: 50
+  missileFrequencyAcceleration: 80
   missileSpeed: 3
   missileEndScale: 10
   missileEndTransparency: 0.8
@@ -9521,7 +9521,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 594fffc06114e7844814a33c27787927, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timerDuration: 60
+  timerDuration: 10
 --- !u!114 &1195249304
 MonoBehaviour:
   m_ObjectHideFlags: 0
